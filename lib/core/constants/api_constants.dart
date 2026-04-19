@@ -14,7 +14,7 @@ class ApiConstants {
   static const String anthropicVersion = '2023-06-01';
 
   /// Timeout duration for API requests.
-  static const Duration requestTimeout = Duration(seconds: 10);
+  static const Duration requestTimeout = Duration(seconds: 30);
 
   /// Example scam message demonstrating a phishing link.
   static const String exampleMessage1 =

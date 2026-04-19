@@ -77,7 +77,13 @@ Never return markdown. Never wrap in code blocks. Never add any text outside the
       final rawText =
           (responseJson['content'] as List).first['text'] as String;
 
-      final analysisJson = jsonDecode(rawText) as Map<String, dynamic>;
+      // Strip markdown code fences Claude occasionally adds despite the prompt.
+      final cleaned = rawText
+          .replaceAll(RegExp(r'```json\s*', caseSensitive: false), '')
+          .replaceAll(RegExp(r'```\s*'), '')
+          .trim();
+
+      final analysisJson = jsonDecode(cleaned) as Map<String, dynamic>;
       return ScamAnalysisResult.fromJson(analysisJson);
     } on TimeoutException {
       throw const ScamDetectorException(

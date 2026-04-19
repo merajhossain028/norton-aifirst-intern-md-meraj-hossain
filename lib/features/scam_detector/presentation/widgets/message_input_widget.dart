@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-/// Text field for entering the message to be analysed.
+/// Text field with a clear button overlay for pasting suspicious messages.
 class MessageInputWidget extends StatelessWidget {
   /// Controller bound to the input field.
   final TextEditingController controller;
@@ -12,14 +12,46 @@ class MessageInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      maxLines: 6,
-      decoration: InputDecoration(
-        hintText: 'Paste a suspicious SMS, email, or URL here…',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-      ),
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller,
+      builder: (context, value, _) {
+        return Stack(
+          children: [
+            TextField(
+              controller: controller,
+              minLines: 5,
+              maxLines: 8,
+              style: const TextStyle(fontSize: 15, color: Color(0xFF333333)),
+              decoration: const InputDecoration(
+                hintText: 'Paste message or URL here.',
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                filled: false,
+                contentPadding: EdgeInsets.only(right: 36, top: 4, bottom: 4),
+                isDense: true,
+              ),
+            ),
+            if (value.text.isNotEmpty)
+              Positioned(
+                top: 2,
+                right: 2,
+                child: GestureDetector(
+                  onTap: controller.clear,
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade400,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.close, size: 13, color: Colors.white),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
