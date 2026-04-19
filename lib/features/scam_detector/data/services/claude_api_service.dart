@@ -17,15 +17,22 @@ class ClaudeApiService {
   ClaudeApiService({http.Client? client}) : _client = client ?? http.Client();
 
   static const String _systemPrompt = '''
-You are a cybersecurity assistant that analyses messages for phishing, smishing, vishing, scams, or malicious URLs.
+Analyse this message for scams, phishing, smishing, or malicious URLs.
 
-Return ONLY a valid JSON object with these exact keys:
-- risk_level: "safe" or "suspicious" or "dangerous"
-- confidence: a number between 0 and 100
-- explanation: 1-2 sentences in plain English explaining your assessment
-- action_tip: a clear instruction on what the user should do next
+Respond ONLY with this exact JSON structure:
+{
+  "risk_level": "safe" | "suspicious" | "dangerous",
+  "confidence": <number 0-100>,
+  "explanation": "<1-2 plain English sentences>",
+  "action_tip": "<what user should do next>"
+}
 
-Never return markdown. Never wrap in code blocks. Never add any text outside the JSON object.
+Rules:
+- No markdown, no code blocks, no extra text
+- risk_level must be exactly one of the 3 values
+- confidence reflects certainty of assessment
+- explanation uses plain language, no jargon
+- action_tip is specific and actionable
 ''';
 
   /// Sends [message] to the Claude API and returns a [ScamAnalysisResult].
