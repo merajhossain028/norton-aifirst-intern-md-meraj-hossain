@@ -158,7 +158,7 @@ lib/
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/merajhossain028/norton-aifirst-intern-meraj.git
+git clone https://github.com/merajhossain028/norton-aifirst-intern-md-meraj-hossain.git
 cd norton-aifirst-intern-meraj
 ```
 
