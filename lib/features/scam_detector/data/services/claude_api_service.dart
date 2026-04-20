@@ -74,6 +74,12 @@ Rules:
         );
       }
 
+      if (response.statusCode == 429) {
+        throw const ScamDetectorException(
+          'Too many requests. Please wait a moment and try again.',
+        );
+      }
+
       if (response.statusCode != 200) {
         throw ScamDetectorException(
           'API error (${response.statusCode}). Please try again.',

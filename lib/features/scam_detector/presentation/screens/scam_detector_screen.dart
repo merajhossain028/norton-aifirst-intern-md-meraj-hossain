@@ -46,10 +46,7 @@ class _ScamDetectorScreenState extends ConsumerState<ScamDetectorScreen>
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _slideController,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOut));
   }
 
   @override
@@ -75,7 +72,9 @@ class _ScamDetectorScreenState extends ConsumerState<ScamDetectorScreen>
   @override
   Widget build(BuildContext context) {
     // Trigger slide animation when a result arrives.
+    // mounted guard prevents AnimationController calls after dispose.
     ref.listen<ScamDetectorState>(scamDetectorProvider, (_, next) {
+      if (!mounted) return;
       if (next is ScamDetectorSuccess) {
         _slideController.forward(from: 0);
       }
@@ -268,10 +267,7 @@ class _ScamDetectorScreenState extends ConsumerState<ScamDetectorScreen>
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                AnalyzeButtonWidget(
-                  onPressed: _analyse,
-                  isDisabled: !hasText,
-                ),
+                AnalyzeButtonWidget(onPressed: _analyse, isDisabled: !hasText),
               ],
             ),
           ),
